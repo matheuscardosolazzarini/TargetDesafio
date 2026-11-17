@@ -59,10 +59,10 @@ public static class EstoqueConsole
     private static void RegistrarMovimentacao(ControleEstoque controle)
     {
         Console.WriteLine();
-        int codigo = LerNumero("Código do produto: ");
+        int codigo = EntradaConsole.LerNumero("Código do produto: ");
         TipoMovimentacao tipo = LerTipo();
-        int quantidade = LerNumero("Quantidade: ");
-        string descricao = LerTexto("Descrição (ex.: Compra de fornecedor, Venda balcão, Devolução de cliente, Ajuste de inventário): ");
+        int quantidade = EntradaConsole.LerNumero("Quantidade: ");
+        string descricao = EntradaConsole.LerTexto("Descrição (ex.: Compra de fornecedor, Venda balcão, Devolução de cliente, Ajuste de inventário): ");
 
         // Erro de regra aqui só cancela esta movimentação. O usuário pode tentar outra em seguida.
         try
@@ -106,26 +106,11 @@ public static class EstoqueConsole
                $"{movimentacao.Descricao} | Estoque final: {movimentacao.EstoqueFinal}";
     }
 
-    private static int LerNumero(string pergunta)
-    {
-        while (true)
-        {
-            string texto = LerTexto(pergunta);
-
-            if (int.TryParse(texto, out int numero))
-            {
-                return numero;
-            }
-
-            Console.WriteLine("Digite um número inteiro.");
-        }
-    }
-
     private static TipoMovimentacao LerTipo()
     {
         while (true)
         {
-            string texto = LerTexto("Tipo (E = entrada, S = saída): ").Trim().ToUpper();
+            string texto = EntradaConsole.LerTexto("Tipo (E = entrada, S = saída): ").Trim().ToUpper();
 
             if (texto == "E")
             {
@@ -145,7 +130,7 @@ public static class EstoqueConsole
     {
         while (true)
         {
-            string texto = LerTexto(pergunta).Trim().ToUpper();
+            string texto = EntradaConsole.LerTexto(pergunta).Trim().ToUpper();
 
             if (texto == "S")
             {
@@ -159,19 +144,5 @@ public static class EstoqueConsole
 
             Console.WriteLine("Digite S ou N.");
         }
-    }
-
-    private static string LerTexto(string pergunta)
-    {
-        Console.Write(pergunta);
-        string? texto = Console.ReadLine();
-
-        // ReadLine devolve null quando a entrada acaba. Sem isso as perguntas repetiriam para sempre.
-        if (texto is null)
-        {
-            throw new InvalidOperationException("A entrada de dados foi encerrada.");
-        }
-
-        return texto;
     }
 }

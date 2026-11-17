@@ -37,15 +37,23 @@ public static class JurosConsole
     {
         while (true)
         {
-            string texto = LerTexto("Valor (ex.: 1.234,56): ");
+            string texto = EntradaConsole.LerTexto("Valor (ex.: 1234,56): ").Trim();
 
-            // Lê no formato brasileiro, com vírgula decimal, pela cultura pt-BR configurada no Program.cs.
-            if (decimal.TryParse(texto, NumberStyles.Number, CultureInfo.CurrentCulture, out decimal valor))
+            // Só aceita vírgula como separador decimal (cultura pt-BR do Program.cs).
+            // Sem AllowThousands, o ponto é recusado: "100.50" não vira 10050 por engano.
+            if (!decimal.TryParse(texto, NumberStyles.AllowDecimalPoint, CultureInfo.CurrentCulture, out decimal valor))
             {
-                return valor;
+                Console.WriteLine("Valor inválido. Use só números e vírgula para os centavos, ex.: 1234,56.");
+                continue;
             }
 
-            Console.WriteLine("Valor inválido. Use o formato 1.234,56.");
+            if (valor <= 0m)
+            {
+                Console.WriteLine("O valor deve ser maior que zero.");
+                continue;
+            }
+
+            return valor;
         }
     }
 
@@ -53,7 +61,7 @@ public static class JurosConsole
     {
         while (true)
         {
-            string texto = LerTexto(pergunta).Trim();
+            string texto = EntradaConsole.LerTexto(pergunta).Trim();
 
             if (DateOnly.TryParseExact(texto, "dd/MM/yyyy", CultureInfo.CurrentCulture, DateTimeStyles.None, out DateOnly data))
             {
@@ -62,19 +70,5 @@ public static class JurosConsole
 
             Console.WriteLine("Data inválida. Use o formato dd/MM/yyyy.");
         }
-    }
-
-    private static string LerTexto(string pergunta)
-    {
-        Console.Write(pergunta);
-        string? texto = Console.ReadLine();
-
-        // ReadLine devolve null quando a entrada acaba. Sem isso as perguntas repetiriam para sempre.
-        if (texto is null)
-        {
-            throw new InvalidOperationException("A entrada de dados foi encerrada.");
-        }
-
-        return texto;
     }
 }

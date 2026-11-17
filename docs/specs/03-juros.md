@@ -27,6 +27,8 @@ O console passa `DateOnly.FromDateTime(DateTime.Today)` como data de referência
 
 Pede valor e vencimento (`dd/MM/yyyy`), repete a pergunta se a entrada for inválida e mostra dias de atraso, juros e valor atualizado.
 
+O valor aceita só vírgula como separador decimal (`1234,56`), sem separador de milhar. Assim `100.50` é recusado em vez de virar 10.050,00. Valor menor ou igual a zero também repete a pergunta.
+
 ## Testes (`JurosTests.cs`)
 
 | Valor  | Vencimento  | Referência  | Dias | Juros  |
@@ -35,6 +37,8 @@ Pede valor e vencimento (`dd/MM/yyyy`), repete a pergunta se a entrada for invá
 | 100,00 | 17/11/2026  | 17/11/2026  | 0    | 0,00   |
 | 100,00 | 07/11/2026  | 17/11/2026  | 10   | 25,00  |
 | 333,33 | 16/11/2026  | 17/11/2026  | 1    | 8,33   |
+
+Valor 0,20 com 1 dia de atraso dá juros 0,005, que arredonda para 0,01 (`AwayFromZero`).
 
 Valor 0 dá erro.
 

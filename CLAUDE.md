@@ -58,6 +58,10 @@ Separação entre cálculo e console, enum de tipo de movimentação, validaçõ
 
 `ArquivoJson.Ler<T>(string caminho)` na raiz do App, com `System.Text.Json` e `PropertyNameCaseInsensitive = true`. Os JSON ficam em `Data/` e são copiados para a saída do build (já configurado no `.csproj`). Caminho base: `AppContext.BaseDirectory`. Os testes usam o mesmo método para ler os arquivos.
 
+### EntradaConsole
+
+`EntradaConsole` na raiz do App, com `LerTexto` e `LerNumero`. Os consoles dos exercícios usam essa classe para ler do teclado. `LerTexto` lança `InvalidOperationException` quando a entrada acaba (`ReadLine` devolve `null`).
+
 ### Menu principal
 
 ```

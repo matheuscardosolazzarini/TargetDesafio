@@ -42,6 +42,17 @@ public class EstoqueTests
     }
 
     [Fact]
+    public void Movimentar_SaidaIgualAoEstoque_ZeraOProduto()
+    {
+        var controle = CriarControle();
+
+        var movimentacao = controle.Movimentar(CanetaAzul, TipoMovimentacao.Saida, 150, "Venda balcão");
+
+        Assert.Equal(0, movimentacao.EstoqueFinal);
+        Assert.Equal(0, EstoqueAtual(controle, CanetaAzul));
+    }
+
+    [Fact]
     public void Movimentar_SaidaMaiorQueEstoque_LancaErroENaoAlteraEstoque()
     {
         var controle = CriarControle();

@@ -16,6 +16,8 @@ public class JurosTests
     [InlineData("100.00", "17/11/2026", "17/11/2026", 0, "0.00")]
     [InlineData("100.00", "07/11/2026", "17/11/2026", 10, "25.00")]
     [InlineData("333.33", "16/11/2026", "17/11/2026", 1, "8.33")]
+    // 0,20 x 2,5% = 0,005: com AwayFromZero vira 0,01 (o arredondamento bancário daria 0,00).
+    [InlineData("0.20", "16/11/2026", "17/11/2026", 1, "0.01")]
     public void Calcular_DiasEJuros(string valor, string vencimento, string referencia, int diasEsperados, string jurosEsperados)
     {
         decimal valorDecimal = decimal.Parse(valor, CultureInfo.InvariantCulture);
