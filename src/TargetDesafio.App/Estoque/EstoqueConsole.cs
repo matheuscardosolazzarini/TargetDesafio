@@ -30,7 +30,7 @@ public static class EstoqueConsole
             while (continuar)
             {
                 RegistrarMovimentacao(_controle);
-                continuar = PerguntarSimOuNao("Fazer outra movimentação? (S/N): ");
+                continuar = PerguntarSimOuNao("Fazer outra movimentação? (S = sim, N = não): ");
             }
 
             MostrarMovimentacoes(_controle);

@@ -43,6 +43,22 @@ public class ComissaoTests
     }
 
     [Fact]
+    public void CalcularPorVendedor_AplicaFaixaVendaAVenda()
+    {
+        var vendas = new List<Venda>
+        {
+            new Venda("Teste", 99.99m),
+            new Venda("Teste", 100.00m),
+            new Venda("Teste", 500.00m)
+        };
+
+        var resultado = CalculadoraComissao.CalcularPorVendedor(vendas);
+
+        // 0 + 1,00 + 25,00 = 26,00. Aplicar 5% sobre o total (699,99) daria 35,00.
+        Assert.Equal(26.00m, resultado.Single().TotalComissao);
+    }
+
+    [Fact]
     public void CalcularPorVendedor_ComArquivoDeVendas_OrdenaPorComissaoDecrescente()
     {
         var arquivo = ArquivoJson.Ler<VendasArquivo>("Data/vendas.json");

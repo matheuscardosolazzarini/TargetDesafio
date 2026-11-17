@@ -105,10 +105,10 @@ O enunciado deixa alguns pontos em aberto. As decisões tomadas foram estas:
 
 ## Testes
 
-39 testes em xUnit:
+41 testes em xUnit:
 
-- Comissão: os limites de cada faixa (99,99, 100,00, 499,99 e 500,00), a quantidade de vendas, o total vendido e a comissão de cada vendedor com o JSON do enunciado, e a ordem do resultado.
-- Estoque: entrada, saída, saída igual ao estoque, saída maior que o estoque, entrada até o limite e acima dele, produto inexistente, quantidade e descrição inválidas, IDs em sequência e ID que não pula após cada tipo de erro.
+- Comissão: os limites de cada faixa (99,99, 100,00, 499,99 e 500,00), a comissão calculada venda a venda e não sobre o total, a quantidade de vendas, o total vendido e a comissão de cada vendedor com o JSON do enunciado, e a ordem do resultado.
+- Estoque: entrada (com os dados gravados na movimentação), saída, descrição gravada sem espaços nas pontas, saída igual ao estoque, saída maior que o estoque, entrada até o limite e acima dele, produto inexistente, quantidade e descrição inválidas, IDs em sequência e ID que não pula após cada tipo de erro.
 - Juros: vencimento futuro, no dia, com atraso, ano bissexto, arredondamento, limites da faixa de valor e valor fora da faixa.
 - Leitura de JSON: arquivo inexistente e JSON mal formado.
 

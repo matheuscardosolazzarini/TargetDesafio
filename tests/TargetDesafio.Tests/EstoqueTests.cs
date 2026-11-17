@@ -26,8 +26,22 @@ public class EstoqueTests
 
         var movimentacao = controle.Movimentar(CanetaAzul, TipoMovimentacao.Entrada, 10, "Compra de fornecedor");
 
+        Assert.Equal(CanetaAzul, movimentacao.CodigoProduto);
+        Assert.Equal(TipoMovimentacao.Entrada, movimentacao.Tipo);
+        Assert.Equal(10, movimentacao.Quantidade);
+        Assert.Equal("Compra de fornecedor", movimentacao.Descricao);
         Assert.Equal(160, movimentacao.EstoqueFinal);
         Assert.Equal(160, EstoqueAtual(controle, CanetaAzul));
+    }
+
+    [Fact]
+    public void Movimentar_DescricaoComEspacos_GravaSemEspacosNasPontas()
+    {
+        var controle = CriarControle();
+
+        var movimentacao = controle.Movimentar(CanetaAzul, TipoMovimentacao.Saida, 10, "  Venda balcão  ");
+
+        Assert.Equal("Venda balcão", movimentacao.Descricao);
     }
 
     [Fact]
