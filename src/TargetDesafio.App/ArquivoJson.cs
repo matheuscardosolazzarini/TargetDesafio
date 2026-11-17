@@ -19,7 +19,16 @@ public static class ArquivoJson
         }
 
         string conteudo = File.ReadAllText(caminhoCompleto);
-        T? resultado = JsonSerializer.Deserialize<T>(conteudo, Opcoes);
+        T? resultado;
+
+        try
+        {
+            resultado = JsonSerializer.Deserialize<T>(conteudo, Opcoes);
+        }
+        catch (JsonException erro)
+        {
+            throw new InvalidOperationException($"O arquivo {caminho} não é um JSON válido: {erro.Message}", erro);
+        }
 
         if (resultado is null)
         {

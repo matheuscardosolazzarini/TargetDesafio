@@ -7,6 +7,14 @@ public static class ComissoesConsole
         try
         {
             var arquivo = ArquivoJson.Ler<VendasArquivo>("Data/vendas.json");
+
+            // Sem a chave "vendas" no JSON, o desserializador deixa a lista nula.
+            if (arquivo.Vendas is null)
+            {
+                Console.WriteLine("Erro: o arquivo vendas.json não tem a lista \"vendas\".");
+                return;
+            }
+
             var comissoes = CalculadoraComissao.CalcularPorVendedor(arquivo.Vendas);
 
             Console.WriteLine();

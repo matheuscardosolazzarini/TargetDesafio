@@ -43,6 +43,8 @@ Lançar movimentações de entrada ou saída dos produtos do JSON. Cada moviment
 
 Entrada inválida (código não numérico, tipo diferente de E/S) repete a pergunta.
 
+Se `estoque.json` vier sem a chave `"estoque"`, a lista chega nula. Tratar como no `ComissoesConsole`: mostrar o erro e voltar ao menu.
+
 ## Testes (`EstoqueTests.cs`)
 
 - Entrada de 10 na Caneta Azul (150) devolve estoque final 160.
