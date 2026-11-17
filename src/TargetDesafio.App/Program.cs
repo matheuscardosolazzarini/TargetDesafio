@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Text;
 using TargetDesafio.App.Comissoes;
 using TargetDesafio.App.Estoque;
+using TargetDesafio.App.Juros;
 
 var cultura = new CultureInfo("pt-BR");
 CultureInfo.DefaultThreadCurrentCulture = cultura;
@@ -13,6 +14,7 @@ while (true)
     Console.WriteLine();
     Console.WriteLine("1 - Comissão por vendedor");
     Console.WriteLine("2 - Movimentação de estoque");
+    Console.WriteLine("3 - Juros por atraso");
     Console.WriteLine("0 - Sair");
     Console.Write("Opção: ");
 
@@ -31,6 +33,9 @@ while (true)
             break;
         case "2":
             EstoqueConsole.Executar();
+            break;
+        case "3":
+            JurosConsole.Executar();
             break;
         default:
             Console.WriteLine("Opção inválida. Tente novamente.");
