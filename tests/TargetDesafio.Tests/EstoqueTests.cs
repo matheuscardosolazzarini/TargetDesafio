@@ -1,0 +1,114 @@
+using TargetDesafio.App;
+using TargetDesafio.App.Estoque;
+
+namespace TargetDesafio.Tests;
+
+public class EstoqueTests
+{
+    private const int CanetaAzul = 101;
+
+    // Cada teste lê o arquivo de novo, para começar com o estoque original e sem movimentações.
+    private static ControleEstoque CriarControle()
+    {
+        var arquivo = ArquivoJson.Ler<EstoqueArquivo>("Data/estoque.json");
+        return new ControleEstoque(arquivo.Estoque);
+    }
+
+    private static int EstoqueAtual(ControleEstoque controle, int codigo)
+    {
+        return controle.Produtos.Single(p => p.CodigoProduto == codigo).Quantidade;
+    }
+
+    [Fact]
+    public void Movimentar_Entrada_SomaAoEstoque()
+    {
+        var controle = CriarControle();
+
+        var movimentacao = controle.Movimentar(CanetaAzul, TipoMovimentacao.Entrada, 10, "Compra de fornecedor");
+
+        Assert.Equal(160, movimentacao.EstoqueFinal);
+        Assert.Equal(160, EstoqueAtual(controle, CanetaAzul));
+    }
+
+    [Fact]
+    public void Movimentar_Saida_SubtraiDoEstoque()
+    {
+        var controle = CriarControle();
+
+        var movimentacao = controle.Movimentar(CanetaAzul, TipoMovimentacao.Saida, 10, "Venda balcão");
+
+        Assert.Equal(140, movimentacao.EstoqueFinal);
+        Assert.Equal(140, EstoqueAtual(controle, CanetaAzul));
+    }
+
+    [Fact]
+    public void Movimentar_SaidaMaiorQueEstoque_LancaErroENaoAlteraEstoque()
+    {
+        var controle = CriarControle();
+
+        Assert.Throws<InvalidOperationException>(
+            () => controle.Movimentar(CanetaAzul, TipoMovimentacao.Saida, 151, "Venda balcão"));
+
+        Assert.Equal(150, EstoqueAtual(controle, CanetaAzul));
+        Assert.Empty(controle.Movimentacoes);
+    }
+
+    [Fact]
+    public void Movimentar_ProdutoInexistente_LancaErro()
+    {
+        var controle = CriarControle();
+
+        Assert.Throws<ArgumentException>(
+            () => controle.Movimentar(999, TipoMovimentacao.Entrada, 10, "Compra de fornecedor"));
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-5)]
+    public void Movimentar_QuantidadeMenorOuIgualAZero_LancaErro(int quantidade)
+    {
+        var controle = CriarControle();
+
+        Assert.Throws<ArgumentException>(
+            () => controle.Movimentar(CanetaAzul, TipoMovimentacao.Entrada, quantidade, "Compra de fornecedor"));
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("   ")]
+    public void Movimentar_DescricaoVazia_LancaErro(string descricao)
+    {
+        var controle = CriarControle();
+
+        Assert.Throws<ArgumentException>(
+            () => controle.Movimentar(CanetaAzul, TipoMovimentacao.Entrada, 10, descricao));
+    }
+
+    [Fact]
+    public void Movimentar_TresSeguidas_RecebemIdsSequenciais()
+    {
+        var controle = CriarControle();
+
+        var primeira = controle.Movimentar(CanetaAzul, TipoMovimentacao.Entrada, 10, "Compra de fornecedor");
+        var segunda = controle.Movimentar(CanetaAzul, TipoMovimentacao.Saida, 5, "Venda balcão");
+        var terceira = controle.Movimentar(CanetaAzul, TipoMovimentacao.Entrada, 2, "Devolução de cliente");
+
+        Assert.Equal(1, primeira.Id);
+        Assert.Equal(2, segunda.Id);
+        Assert.Equal(3, terceira.Id);
+    }
+
+    [Fact]
+    public void Movimentar_ErroEntreDuasValidas_NaoPulaId()
+    {
+        var controle = CriarControle();
+
+        var primeira = controle.Movimentar(CanetaAzul, TipoMovimentacao.Entrada, 10, "Compra de fornecedor");
+        Assert.Throws<InvalidOperationException>(
+            () => controle.Movimentar(CanetaAzul, TipoMovimentacao.Saida, 1000, "Venda balcão"));
+        var segunda = controle.Movimentar(CanetaAzul, TipoMovimentacao.Saida, 5, "Venda balcão");
+
+        Assert.Equal(1, primeira.Id);
+        Assert.Equal(2, segunda.Id);
+    }
+}

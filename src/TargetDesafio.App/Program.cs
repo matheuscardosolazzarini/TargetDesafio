@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Text;
 using TargetDesafio.App.Comissoes;
+using TargetDesafio.App.Estoque;
 
 var cultura = new CultureInfo("pt-BR");
 CultureInfo.DefaultThreadCurrentCulture = cultura;
@@ -11,6 +12,7 @@ while (true)
 {
     Console.WriteLine();
     Console.WriteLine("1 - Comissão por vendedor");
+    Console.WriteLine("2 - Movimentação de estoque");
     Console.WriteLine("0 - Sair");
     Console.Write("Opção: ");
 
@@ -26,6 +28,9 @@ while (true)
     {
         case "1":
             ComissoesConsole.Executar();
+            break;
+        case "2":
+            EstoqueConsole.Executar();
             break;
         default:
             Console.WriteLine("Opção inválida. Tente novamente.");
