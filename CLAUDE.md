@@ -1,6 +1,6 @@
 # TargetDesafio
 
-Desafio técnico da Target Sistemas para a vaga de Desenvolvedor de Sistemas Jr. Entrega até 22/11/2026, com o link do GitHub respondendo o e-mail da Gupy.
+Desafio técnico da Target Sistemas para a vaga de Desenvolvedor de Sistemas Jr.
 
 ## Objetivo
 
@@ -13,7 +13,7 @@ Código simples e direto, fácil de ler e de explicar. Na dúvida entre uma form
 ```
 TargetDesafio/
 ├── CLAUDE.md
-├── README.md                     último passo
+├── README.md
 ├── docs/specs/                   uma spec por exercício
 ├── src/TargetDesafio.App/        console
 │   ├── Comissoes/
@@ -21,6 +21,7 @@ TargetDesafio/
 │   ├── Juros/
 │   ├── Data/                     vendas.json, estoque.json
 │   ├── ArquivoJson.cs
+│   ├── EntradaConsole.cs
 │   └── Program.cs
 └── tests/TargetDesafio.Tests/    xUnit
 ```
@@ -71,7 +72,7 @@ Separação entre cálculo e console, enum de tipo de movimentação, validaçõ
 0 - Sair
 ```
 
-Opção inválida mostra aviso e repete o menu. Ao terminar um exercício, volta para o menu. Cada opção entra no menu quando o exercício correspondente for implementado.
+Opção inválida mostra aviso e repete o menu. Ao terminar um exercício, volta para o menu.
 
 ## Convenções
 
@@ -96,15 +97,3 @@ dotnet run --project src/TargetDesafio.App
 - Ao terminar: `dotnet build` sem warnings e `dotnet test` verde.
 - Não fazer commit. Os commits são feitos depois da revisão.
 - No fim de cada exercício, responder com uma lista curta: arquivos criados, e cada decisão tomada que não estava escrita na spec, com o motivo.
-
-## Texto (README e mensagens)
-
-Curto, direto, em português. Evitar sinais de texto de IA: palavras infladas ("crucial", "robusto", "fundamental"), "não é só X, é Y", grupos de três forçados, gerúndio no fim da frase ("garantindo", "destacando"), negrito em excesso, travessão no lugar de vírgula, emoji.
-
-## README
-
-Último passo, depois dos três exercícios:
-
-- Como rodar (comandos acima).
-- Premissas: juntar a seção "Premissas" de cada spec.
-- Exemplo de saída de cada exercício.
