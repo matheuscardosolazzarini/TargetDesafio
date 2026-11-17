@@ -64,12 +64,12 @@ Código  Descrição                    Estoque
 
 Código do produto: 101
 Tipo (E = entrada, S = saída): S
-Quantidade: 10
+Quantidade (maior que zero): 10
 Descrição (ex.: Compra de fornecedor, Venda balcão, Devolução de cliente, Ajuste de inventário): Venda balcão
 Movimentação #1 | Saída | 10 un. | Caneta Azul | Venda balcão | Estoque final: 140
 ```
 
-Validações: produto inexistente, quantidade menor ou igual a zero, descrição vazia e saída maior que o estoque. Quando uma movimentação é recusada, o estoque não muda e o ID não é consumido.
+Validações: produto inexistente, quantidade menor ou igual a zero, descrição vazia, saída maior que o estoque e entrada que passaria do limite de estoque. Quando uma movimentação é recusada, o estoque não muda e o ID não é consumido. Código e quantidade também são conferidos logo depois de digitados, e só aquela pergunta se repete.
 
 ### 3. Juros por atraso
 
@@ -94,19 +94,22 @@ O enunciado deixa alguns pontos em aberto. As decisões tomadas foram estas:
 - Venda de exatamente R$ 500,00 entra na faixa de 5%.
 - A comissão de cada venda não é arredondada. O arredondamento (2 casas, `AwayFromZero`) é feito só no total do vendedor. Arredondar venda a venda daria 1 centavo a mais para cada vendedor.
 - Saída maior que o estoque é recusada. O estoque nunca fica negativo.
+- Entrada que passaria do limite de um `int` (2.147.483.647) é recusada.
 - As movimentações ficam em memória. O ID é único durante a execução e recomeça em 1 quando o programa reinicia.
 - O tipo da movimentação indica o sentido (entrada ou saída). A descrição indica o motivo (compra, venda, devolução, ajuste).
 - O enunciado chama a taxa de "juros" e de "multa". Foi tratada como juros simples de 2,5% ao dia sobre o valor original.
 - Os dias de atraso são corridos, sem ajuste para dia útil. Vencimento hoje ou no futuro não gera juros.
-- O valor é digitado com vírgula decimal (`1234,56`). Ponto é recusado, para `100.50` não ser lido como 10.050,00.
+- O valor é digitado com vírgula decimal (`1234,56`) e no máximo 2 casas. Ponto é recusado, para `100.50` não ser lido como 10.050,00.
+- O valor aceito vai de R$ 0,01 a R$ 1.000.000.000,00.
+- O vencimento aceita dia e mês com um ou dois dígitos (`07/11/2026` ou `7/11/2026`).
 
 ## Testes
 
-29 testes em xUnit:
+38 testes em xUnit:
 
 - Comissão: os limites de cada faixa (99,99, 100,00, 499,99 e 500,00), o total de cada vendedor com o JSON do enunciado e a ordem do resultado.
-- Estoque: entrada, saída, saída igual ao estoque, saída maior que o estoque, produto inexistente, quantidade e descrição inválidas, IDs em sequência e ID que não pula após erro.
-- Juros: vencimento futuro, no dia, com atraso, arredondamento e valor inválido.
+- Estoque: entrada, saída, saída igual ao estoque, saída maior que o estoque, entrada acima do limite, produto inexistente, quantidade e descrição inválidas, IDs em sequência e ID que não pula após cada tipo de erro.
+- Juros: vencimento futuro, no dia, com atraso, ano bissexto, arredondamento, limites da faixa de valor e valor fora da faixa.
 - Leitura de JSON: arquivo inexistente e JSON mal formado.
 
 ## Processo

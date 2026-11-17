@@ -27,7 +27,7 @@ public static class EntradaConsole
                 return numero;
             }
 
-            Console.WriteLine("Digite um número inteiro.");
+            Console.WriteLine("Número inválido. Digite um número inteiro, sem ponto nem vírgula (ex.: 10).");
         }
     }
 }

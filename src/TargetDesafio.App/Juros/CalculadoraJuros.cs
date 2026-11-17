@@ -4,11 +4,15 @@ public static class CalculadoraJuros
 {
     private const decimal TaxaDiaria = 0.025m;
 
+    // Públicas para o JurosConsole usar a mesma faixa na validação e na mensagem.
+    public const decimal ValorMinimo = 0.01m;
+    public const decimal ValorMaximo = 1_000_000_000.00m;
+
     public static ResultadoJuros Calcular(decimal valor, DateOnly vencimento, DateOnly dataReferencia)
     {
-        if (valor <= 0m)
+        if (valor < ValorMinimo || valor > ValorMaximo)
         {
-            throw new ArgumentException("O valor deve ser maior que zero.");
+            throw new ArgumentException($"O valor deve estar entre {ValorMinimo:C} e {ValorMaximo:C}.");
         }
 
         // DayNumber é o número de dias desde 01/01/0001. A diferença dá os dias corridos entre as datas.

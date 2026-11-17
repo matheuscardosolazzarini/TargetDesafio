@@ -59,9 +59,9 @@ public static class EstoqueConsole
     private static void RegistrarMovimentacao(ControleEstoque controle)
     {
         Console.WriteLine();
-        int codigo = EntradaConsole.LerNumero("Código do produto: ");
+        int codigo = LerCodigo(controle);
         TipoMovimentacao tipo = LerTipo();
-        int quantidade = EntradaConsole.LerNumero("Quantidade: ");
+        int quantidade = LerQuantidade();
         string descricao = EntradaConsole.LerTexto("Descrição (ex.: Compra de fornecedor, Venda balcão, Devolução de cliente, Ajuste de inventário): ");
 
         // Erro de regra aqui só cancela esta movimentação. O usuário pode tentar outra em seguida.
@@ -104,6 +104,38 @@ public static class EstoqueConsole
 
         return $"Movimentação #{movimentacao.Id} | {tipo} | {movimentacao.Quantidade} un. | {nomeProduto} | " +
                $"{movimentacao.Descricao} | Estoque final: {movimentacao.EstoqueFinal}";
+    }
+
+    // Valida já na digitação para o usuário corrigir só esta resposta.
+    // O ControleEstoque continua validando, porque pode ser chamado sem passar pelo console (ex.: testes).
+    private static int LerCodigo(ControleEstoque controle)
+    {
+        while (true)
+        {
+            int codigo = EntradaConsole.LerNumero("Código do produto: ");
+
+            if (controle.Produtos.Any(p => p.CodigoProduto == codigo))
+            {
+                return codigo;
+            }
+
+            Console.WriteLine("Produto não encontrado. Use um dos códigos da lista.");
+        }
+    }
+
+    private static int LerQuantidade()
+    {
+        while (true)
+        {
+            int quantidade = EntradaConsole.LerNumero("Quantidade (maior que zero): ");
+
+            if (quantidade > 0)
+            {
+                return quantidade;
+            }
+
+            Console.WriteLine("A quantidade deve ser maior que zero.");
+        }
     }
 
     private static TipoMovimentacao LerTipo()

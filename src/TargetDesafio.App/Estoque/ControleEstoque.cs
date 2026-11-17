@@ -38,6 +38,13 @@ public class ControleEstoque
 
         if (tipo == TipoMovimentacao.Entrada)
         {
+            // Compara pela diferença, porque somar primeiro estouraria o int e daria um número negativo.
+            if (quantidade > int.MaxValue - produto.Quantidade)
+            {
+                throw new InvalidOperationException(
+                    $"A entrada ultrapassa o limite de estoque de {produto.DescricaoProduto}.");
+            }
+
             estoqueFinal = produto.Quantidade + quantidade;
         }
         else if (tipo == TipoMovimentacao.Saida)

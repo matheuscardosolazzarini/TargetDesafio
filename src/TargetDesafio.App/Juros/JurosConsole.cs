@@ -41,15 +41,18 @@ public static class JurosConsole
 
             // Só aceita vírgula como separador decimal (cultura pt-BR do Program.cs).
             // Sem AllowThousands, o ponto é recusado: "100.50" não vira 10050 por engano.
-            if (!decimal.TryParse(texto, NumberStyles.AllowDecimalPoint, CultureInfo.CurrentCulture, out decimal valor))
+            bool formatoValido = decimal.TryParse(texto, NumberStyles.AllowDecimalPoint, CultureInfo.CurrentCulture, out decimal valor);
+
+            // Se arredondar para 2 casas muda o número, ele tinha mais de 2 casas decimais (ex.: 10,005).
+            if (!formatoValido || Math.Round(valor, 2) != valor)
             {
-                Console.WriteLine("Valor inválido. Use só números e vírgula para os centavos, ex.: 1234,56.");
+                Console.WriteLine("Valor inválido. Use vírgula nos centavos, sem ponto de milhar nem R$ (ex.: 1234,56).");
                 continue;
             }
 
-            if (valor <= 0m)
+            if (valor < CalculadoraJuros.ValorMinimo || valor > CalculadoraJuros.ValorMaximo)
             {
-                Console.WriteLine("O valor deve ser maior que zero.");
+                Console.WriteLine($"O valor deve estar entre {CalculadoraJuros.ValorMinimo:C} e {CalculadoraJuros.ValorMaximo:C}.");
                 continue;
             }
 
@@ -63,12 +66,13 @@ public static class JurosConsole
         {
             string texto = EntradaConsole.LerTexto(pergunta).Trim();
 
-            if (DateOnly.TryParseExact(texto, "dd/MM/yyyy", CultureInfo.CurrentCulture, DateTimeStyles.None, out DateOnly data))
+            // "d/M/yyyy" aceita dia e mês com um ou dois dígitos: 07/11/2026 e 7/11/2026.
+            if (DateOnly.TryParseExact(texto, "d/M/yyyy", CultureInfo.CurrentCulture, DateTimeStyles.None, out DateOnly data))
             {
                 return data;
             }
 
-            Console.WriteLine("Data inválida. Use o formato dd/MM/yyyy.");
+            Console.WriteLine("Data inválida. Use dia/mês/ano, ex.: 07/11/2026.");
         }
     }
 }

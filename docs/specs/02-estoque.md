@@ -18,6 +18,7 @@ Lançar movimentações de entrada ou saída dos produtos do JSON. Cada moviment
 - Quantidade menor ou igual a zero: erro.
 - Descrição vazia ou só espaços: erro.
 - Saída maior que o estoque atual: erro, e o estoque não muda.
+- Entrada que faria o estoque passar de `int.MaxValue`: `InvalidOperationException` "A entrada ultrapassa o limite de estoque de {produto}.", e o estoque não muda.
 - Quando dá erro, o ID não é consumido.
 
 ## Tipos
@@ -41,7 +42,14 @@ Lançar movimentações de entrada ou saída dos produtos do JSON. Cada moviment
    `Movimentação #1 | Saída | 10 un. | Caneta Azul | Venda balcão | Estoque final: 140`
 4. Pergunta se quer fazer outra. Ao sair, lista todas as movimentações da sessão.
 
-Entrada inválida (código não numérico, tipo diferente de E/S) repete a pergunta.
+Entrada inválida repete só aquela pergunta:
+
+- Número não inteiro (código ou quantidade): "Número inválido. Digite um número inteiro, sem ponto nem vírgula (ex.: 10)."
+- Código fora da lista: "Produto não encontrado. Use um dos códigos da lista."
+- Tipo diferente de E/S: "Digite E ou S."
+- Quantidade menor ou igual a zero: "A quantidade deve ser maior que zero." O prompt é "Quantidade (maior que zero): ".
+
+As validações do `ControleEstoque` continuam, porque ele também é usado sem o console (testes).
 
 Se `estoque.json` vier sem a chave `"estoque"`, a lista chega nula. Tratar como no `ComissoesConsole`: mostrar o erro e voltar ao menu.
 
@@ -53,11 +61,14 @@ Se `estoque.json` vier sem a chave `"estoque"`, a lista chega nula. Tratar como 
 - Produto 999 dá erro.
 - Quantidade 0 dá erro.
 - Descrição vazia dá erro.
+- Saída de 150 na Caneta Azul zera o estoque.
+- Entrada de `int.MaxValue` na Caneta Azul dá erro e o estoque continua 150.
 - Três movimentações seguidas recebem IDs 1, 2 e 3.
-- Uma movimentação com erro entre duas válidas não pula ID.
+- Uma movimentação com erro entre duas válidas não pula ID: saída maior que o estoque, produto inexistente, quantidade 0 e descrição vazia.
 
 ## Premissas (para o README)
 
 - Saída maior que o estoque é bloqueada.
+- Entrada que passaria do limite de um `int` (2.147.483.647) é bloqueada.
 - Movimentações só em memória, com ID único por execução.
 - A descrição é o motivo da movimentação (compra, venda, devolução, ajuste), separada do sentido entrada/saída.

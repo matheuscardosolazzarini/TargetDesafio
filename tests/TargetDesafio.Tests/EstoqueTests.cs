@@ -65,6 +65,19 @@ public class EstoqueTests
     }
 
     [Fact]
+    public void Movimentar_EntradaQueUltrapassaLimiteDoInt_LancaErroENaoAlteraEstoque()
+    {
+        var controle = CriarControle();
+
+        // 150 + int.MaxValue não cabe num int.
+        Assert.Throws<InvalidOperationException>(
+            () => controle.Movimentar(CanetaAzul, TipoMovimentacao.Entrada, int.MaxValue, "Compra de fornecedor"));
+
+        Assert.Equal(150, EstoqueAtual(controle, CanetaAzul));
+        Assert.Empty(controle.Movimentacoes);
+    }
+
+    [Fact]
     public void Movimentar_ProdutoInexistente_LancaErro()
     {
         var controle = CriarControle();
@@ -117,6 +130,23 @@ public class EstoqueTests
         var primeira = controle.Movimentar(CanetaAzul, TipoMovimentacao.Entrada, 10, "Compra de fornecedor");
         Assert.Throws<InvalidOperationException>(
             () => controle.Movimentar(CanetaAzul, TipoMovimentacao.Saida, 1000, "Venda balcão"));
+        var segunda = controle.Movimentar(CanetaAzul, TipoMovimentacao.Saida, 5, "Venda balcão");
+
+        Assert.Equal(1, primeira.Id);
+        Assert.Equal(2, segunda.Id);
+    }
+
+    [Theory]
+    [InlineData(999, 10, "Compra de fornecedor")]
+    [InlineData(CanetaAzul, 0, "Compra de fornecedor")]
+    [InlineData(CanetaAzul, 10, "")]
+    public void Movimentar_ArgumentoInvalidoEntreDuasValidas_NaoPulaId(int codigo, int quantidade, string descricao)
+    {
+        var controle = CriarControle();
+
+        var primeira = controle.Movimentar(CanetaAzul, TipoMovimentacao.Entrada, 10, "Compra de fornecedor");
+        Assert.Throws<ArgumentException>(
+            () => controle.Movimentar(codigo, TipoMovimentacao.Entrada, quantidade, descricao));
         var segunda = controle.Movimentar(CanetaAzul, TipoMovimentacao.Saida, 5, "Venda balcão");
 
         Assert.Equal(1, primeira.Id);
