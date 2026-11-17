@@ -65,6 +65,18 @@ public class EstoqueTests
     }
 
     [Fact]
+    public void Movimentar_EntradaAteOLimiteDoInt_EhAceita()
+    {
+        var controle = CriarControle();
+
+        // 150 + (int.MaxValue - 150) = int.MaxValue: chega no limite sem passar dele.
+        var movimentacao = controle.Movimentar(CanetaAzul, TipoMovimentacao.Entrada, int.MaxValue - 150, "Compra de fornecedor");
+
+        Assert.Equal(int.MaxValue, movimentacao.EstoqueFinal);
+        Assert.Equal(int.MaxValue, EstoqueAtual(controle, CanetaAzul));
+    }
+
+    [Fact]
     public void Movimentar_EntradaQueUltrapassaLimiteDoInt_LancaErroENaoAlteraEstoque()
     {
         var controle = CriarControle();

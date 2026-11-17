@@ -10,7 +10,7 @@ public static class JurosConsole
         {
             Console.WriteLine();
             decimal valor = LerValor();
-            DateOnly vencimento = LerData("Vencimento (dd/MM/yyyy): ");
+            DateOnly vencimento = LerData("Vencimento (dd/mm/aaaa): ");
             DateOnly hoje = DateOnly.FromDateTime(DateTime.Today);
 
             var resultado = CalculadoraJuros.Calcular(valor, vencimento, hoje);
@@ -41,12 +41,14 @@ public static class JurosConsole
 
             // Só aceita vírgula como separador decimal (cultura pt-BR do Program.cs).
             // Sem AllowThousands, o ponto é recusado: "100.50" não vira 10050 por engano.
-            bool formatoValido = decimal.TryParse(texto, NumberStyles.AllowDecimalPoint, CultureInfo.CurrentCulture, out decimal valor);
+            // AllowLeadingSign aceita o "-" para o negativo cair na mensagem da faixa, que explica melhor o erro.
+            NumberStyles estilo = NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign;
+            bool formatoValido = decimal.TryParse(texto, estilo, CultureInfo.CurrentCulture, out decimal valor);
 
             // Se arredondar para 2 casas muda o número, ele tinha mais de 2 casas decimais (ex.: 10,005).
             if (!formatoValido || Math.Round(valor, 2) != valor)
             {
-                Console.WriteLine("Valor inválido. Use vírgula nos centavos, sem ponto de milhar nem R$ (ex.: 1234,56).");
+                Console.WriteLine("Valor inválido. Use vírgula e no máximo 2 casas decimais, sem ponto de milhar nem R$ (ex.: 1234,56).");
                 continue;
             }
 
@@ -72,7 +74,7 @@ public static class JurosConsole
                 return data;
             }
 
-            Console.WriteLine("Data inválida. Use dia/mês/ano, ex.: 07/11/2026.");
+            Console.WriteLine("Data inválida. Use dia/mês/ano (ex.: 07/11/2026).");
         }
     }
 }

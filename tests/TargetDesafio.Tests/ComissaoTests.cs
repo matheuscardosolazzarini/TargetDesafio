@@ -23,19 +23,23 @@ public class ComissaoTests
     }
 
     [Theory]
-    [InlineData("João Silva", "495.68")]
-    [InlineData("Maria Souza", "465.95")]
-    [InlineData("Ana Lima", "404.98")]
-    [InlineData("Carlos Oliveira", "379.37")]
-    public void CalcularPorVendedor_ComArquivoDeVendas_TotalPorVendedor(string vendedor, string totalEsperado)
+    [InlineData("João Silva", 10, "10754.70", "495.68")]
+    [InlineData("Maria Souza", 9, "9874.30", "465.95")]
+    [InlineData("Ana Lima", 9, "8763.95", "404.98")]
+    [InlineData("Carlos Oliveira", 8, "7928.35", "379.37")]
+    public void CalcularPorVendedor_ComArquivoDeVendas_TotaisPorVendedor(
+        string vendedor, int quantidadeEsperada, string totalVendidoEsperado, string comissaoEsperada)
     {
         var arquivo = ArquivoJson.Ler<VendasArquivo>("Data/vendas.json");
-        decimal esperado = decimal.Parse(totalEsperado, CultureInfo.InvariantCulture);
+        decimal totalVendido = decimal.Parse(totalVendidoEsperado, CultureInfo.InvariantCulture);
+        decimal comissao = decimal.Parse(comissaoEsperada, CultureInfo.InvariantCulture);
 
         var resultado = CalculadoraComissao.CalcularPorVendedor(arquivo.Vendas);
 
         var item = resultado.Single(r => r.Vendedor == vendedor);
-        Assert.Equal(esperado, item.TotalComissao);
+        Assert.Equal(quantidadeEsperada, item.QuantidadeVendas);
+        Assert.Equal(totalVendido, item.TotalVendido);
+        Assert.Equal(comissao, item.TotalComissao);
     }
 
     [Fact]

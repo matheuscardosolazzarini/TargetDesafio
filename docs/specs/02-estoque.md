@@ -44,14 +44,15 @@ Lançar movimentações de entrada ou saída dos produtos do JSON. Cada moviment
 
 Entrada inválida repete só aquela pergunta:
 
-- Número não inteiro (código ou quantidade): "Número inválido. Digite um número inteiro, sem ponto nem vírgula (ex.: 10)."
+- Número não inteiro (código ou quantidade): "Número inválido. Digite um número inteiro válido, sem ponto nem vírgula (ex.: 10)."
 - Código fora da lista: "Produto não encontrado. Use um dos códigos da lista."
 - Tipo diferente de E/S: "Digite E ou S."
 - Quantidade menor ou igual a zero: "A quantidade deve ser maior que zero." O prompt é "Quantidade (maior que zero): ".
+- Descrição vazia ou só espaços: "A descrição é obrigatória."
 
 As validações do `ControleEstoque` continuam, porque ele também é usado sem o console (testes).
 
-Se `estoque.json` vier sem a chave `"estoque"`, a lista chega nula. Tratar como no `ComissoesConsole`: mostrar o erro e voltar ao menu.
+Se `estoque.json` vier sem a chave `"estoque"`, a lista chega nula. O console mostra o erro e volta ao menu.
 
 ## Testes (`EstoqueTests.cs`)
 
@@ -62,11 +63,12 @@ Se `estoque.json` vier sem a chave `"estoque"`, a lista chega nula. Tratar como 
 - Quantidade 0 dá erro.
 - Descrição vazia dá erro.
 - Saída de 150 na Caneta Azul zera o estoque.
+- Entrada de `int.MaxValue - 150` na Caneta Azul é aceita e deixa o estoque em `int.MaxValue`.
 - Entrada de `int.MaxValue` na Caneta Azul dá erro e o estoque continua 150.
 - Três movimentações seguidas recebem IDs 1, 2 e 3.
 - Uma movimentação com erro entre duas válidas não pula ID: saída maior que o estoque, produto inexistente, quantidade 0 e descrição vazia.
 
-## Premissas (para o README)
+## Premissas
 
 - Saída maior que o estoque é bloqueada.
 - Entrada que passaria do limite de um `int` (2.147.483.647) é bloqueada.

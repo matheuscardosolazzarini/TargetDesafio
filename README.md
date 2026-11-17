@@ -69,7 +69,7 @@ Descrição (ex.: Compra de fornecedor, Venda balcão, Devolução de cliente, A
 Movimentação #1 | Saída | 10 un. | Caneta Azul | Venda balcão | Estoque final: 140
 ```
 
-Validações: produto inexistente, quantidade menor ou igual a zero, descrição vazia, saída maior que o estoque e entrada que passaria do limite de estoque. Quando uma movimentação é recusada, o estoque não muda e o ID não é consumido. Código e quantidade também são conferidos logo depois de digitados, e só aquela pergunta se repete.
+Validações: produto inexistente, quantidade menor ou igual a zero, descrição vazia, saída maior que o estoque e entrada que passaria do limite de estoque. Quando uma movimentação é recusada, o estoque não muda e o ID não é consumido. Código, quantidade e descrição também são conferidos logo depois de digitados, e só aquela pergunta se repete.
 
 ### 3. Juros por atraso
 
@@ -77,7 +77,7 @@ Recebe um valor e uma data de vencimento e calcula os juros até a data de hoje,
 
 ```
 Valor (ex.: 1234,56): 1500,00
-Vencimento (dd/MM/yyyy): 07/11/2026
+Vencimento (dd/mm/aaaa): 07/11/2026
 
 Valor original:   R$ 1.500,00
 Vencimento:       07/11/2026
@@ -105,10 +105,10 @@ O enunciado deixa alguns pontos em aberto. As decisões tomadas foram estas:
 
 ## Testes
 
-38 testes em xUnit:
+39 testes em xUnit:
 
-- Comissão: os limites de cada faixa (99,99, 100,00, 499,99 e 500,00), o total de cada vendedor com o JSON do enunciado e a ordem do resultado.
-- Estoque: entrada, saída, saída igual ao estoque, saída maior que o estoque, entrada acima do limite, produto inexistente, quantidade e descrição inválidas, IDs em sequência e ID que não pula após cada tipo de erro.
+- Comissão: os limites de cada faixa (99,99, 100,00, 499,99 e 500,00), a quantidade de vendas, o total vendido e a comissão de cada vendedor com o JSON do enunciado, e a ordem do resultado.
+- Estoque: entrada, saída, saída igual ao estoque, saída maior que o estoque, entrada até o limite e acima dele, produto inexistente, quantidade e descrição inválidas, IDs em sequência e ID que não pula após cada tipo de erro.
 - Juros: vencimento futuro, no dia, com atraso, ano bissexto, arredondamento, limites da faixa de valor e valor fora da faixa.
 - Leitura de JSON: arquivo inexistente e JSON mal formado.
 

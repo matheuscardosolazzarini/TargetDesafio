@@ -62,7 +62,7 @@ public static class EstoqueConsole
         int codigo = LerCodigo(controle);
         TipoMovimentacao tipo = LerTipo();
         int quantidade = LerQuantidade();
-        string descricao = EntradaConsole.LerTexto("Descrição (ex.: Compra de fornecedor, Venda balcão, Devolução de cliente, Ajuste de inventário): ");
+        string descricao = LerDescricao();
 
         // Erro de regra aqui só cancela esta movimentação. O usuário pode tentar outra em seguida.
         try
@@ -135,6 +135,22 @@ public static class EstoqueConsole
             }
 
             Console.WriteLine("A quantidade deve ser maior que zero.");
+        }
+    }
+
+    private static string LerDescricao()
+    {
+        while (true)
+        {
+            string descricao = EntradaConsole.LerTexto(
+                "Descrição (ex.: Compra de fornecedor, Venda balcão, Devolução de cliente, Ajuste de inventário): ");
+
+            if (!string.IsNullOrWhiteSpace(descricao))
+            {
+                return descricao;
+            }
+
+            Console.WriteLine("A descrição é obrigatória.");
         }
     }
 

@@ -16,10 +16,6 @@ A comissão é calculada venda a venda e somada por vendedor. Não aplicar o per
 
 A comissão de cada venda não é arredondada. O arredondamento acontece só no total por vendedor. Arredondar venda a venda dá 1 centavo a mais para todos os vendedores neste conjunto de dados.
 
-## Escopo extra deste exercício
-
-Como é o primeiro, também cria `ArquivoJson` e o menu principal descritos no CLAUDE.md, só com as opções 1 e 0 por enquanto.
-
 ## Tipos
 
 - `record Venda(string Vendedor, decimal Valor)`
@@ -33,7 +29,7 @@ Como é o primeiro, também cria `ArquivoJson` e o menu principal descritos no C
 ## Saída esperada
 
 ```
-Vendedor          Vendas   Total vendido   Comissão
+Vendedor          Vendas   Total vendido    Comissão
 João Silva            10    R$ 10.754,70   R$ 495,68
 Maria Souza            9     R$ 9.874,30   R$ 465,95
 Ana Lima               9     R$ 8.763,95   R$ 404,98
@@ -53,10 +49,10 @@ Comissão por venda:
 
 Com `Data/vendas.json`:
 
-- Totais: João 495,68; Maria 465,95; Ana 404,98; Carlos 379,37.
+- Vendas, total vendido e comissão: João 10 / 10.754,70 / 495,68; Maria 9 / 9.874,30 / 465,95; Ana 9 / 8.763,95 / 404,98; Carlos 8 / 7.928,35 / 379,37.
 - Ordem do resultado: João, Maria, Ana, Carlos.
 
-## Premissas (para o README)
+## Premissas
 
 - Venda de exatamente R$ 500,00 entra nos 5%.
 - Arredondamento só no total do vendedor.

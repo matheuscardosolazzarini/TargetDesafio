@@ -29,10 +29,10 @@ Pede valor e vencimento, repete a pergunta se a entrada for inválida e mostra d
 
 Valor:
 
-- Só vírgula como separador decimal (`1234,56`), no máximo 2 casas, sem ponto de milhar nem `R$`. Assim `100.50` é recusado em vez de virar 10.050,00. Mensagem: "Valor inválido. Use vírgula nos centavos, sem ponto de milhar nem R$ (ex.: 1234,56)."
+- Só vírgula como separador decimal (`1234,56`), no máximo 2 casas, sem ponto de milhar nem `R$`. Assim `100.50` é recusado em vez de virar 10.050,00. Mensagem: "Valor inválido. Use vírgula e no máximo 2 casas decimais, sem ponto de milhar nem R$ (ex.: 1234,56)."
 - Fora da faixa de 0,01 a 1.000.000.000,00: "O valor deve estar entre R$ 0,01 e R$ 1.000.000.000,00."
 
-Vencimento no formato `d/M/yyyy`, que aceita `07/11/2026` e `7/11/2026`. Mensagem: "Data inválida. Use dia/mês/ano, ex.: 07/11/2026."
+Vencimento no formato `d/M/yyyy`, que aceita `07/11/2026` e `7/11/2026`. O prompt é "Vencimento (dd/mm/aaaa): ". Mensagem: "Data inválida. Use dia/mês/ano (ex.: 07/11/2026)."
 
 ## Testes (`JurosTests.cs`)
 
@@ -50,7 +50,7 @@ O caso de 2028 confere o ano bissexto: de 28/02 a 01/03 passa pelo 29/02.
 
 Valor 0 e valor acima de 1.000.000.000,00 dão erro.
 
-## Premissas (para o README)
+## Premissas
 
 - Juros simples de 2,5% ao dia, em dias corridos, sem ajuste de dia útil.
 - O enunciado usa "juros" e "multa" para a mesma taxa diária. Foi tratado como juros.
